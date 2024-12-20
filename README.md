@@ -9,7 +9,7 @@ assistir séries e praticar esportes no meu tempo livre, assim como me aperfeiç
 
 ## Sprints 
 
-1. [Sprint 1](Sprint%201/README.md)
+1. [Sprint 1]([Sprint%201/README.md](https://github.com/d4n1schulz/Scholarship-AWS-Cloud-Data-Engineering/blob/main/Sprint%201/ativ.md))
 
 ___
 
