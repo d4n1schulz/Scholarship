@@ -19,54 +19,65 @@ utilizando tabelas fato e dimensões para facilitar a leitura e interpretação 
 
 # Exercícios
 
+## Exercícios 1
 
 1. ...
-[Resposta Ex1.](Exercícios/Exercícios_1/E01.SQL)
+[Resposta Ex1.](Exercícios/Exercícios_1/E01.sql)
 
 2. ...
-[Resposta Ex2.](Exercícios/Exercícios_1/E02.SQL)
+[Resposta Ex2.](Exercícios/Exercícios_1/E02.sql)
 
 3. ...
-[Resposta Ex3.](Exercícios/Exercícios_1/E03.SQL)
+[Resposta Ex3.](Exercícios/Exercícios_1/E03.sql)
 
 4. ...
-[Resposta Ex4.](Exercícios/Exercícios_1/E04.SQL)
+[Resposta Ex4.](Exercícios/Exercícios_1/E04.sql)
 
 5. ...
-[Resposta Ex5.](Exercícios/Exercícios_1/E05.SQL)
+[Resposta Ex5.](Exercícios/Exercícios_1/E05.sql)
 
 6. ...
-[Resposta Ex6.](Exercícios/Exercícios_1/E06.SQL)
+[Resposta Ex6.](Exercícios/Exercícios_1/E06.sql)
 
 7. ...
-[Resposta Ex7.](Exercícios/Exercícios_1/E07.SQL)
+[Resposta Ex7.](Exercícios/Exercícios_1/E07.sql)
 
 8. ...
-[Resposta Ex8.](Exercícios/Exercícios_1/E08.SQL)
+[Resposta Ex8.](Exercícios/Exercícios_1/E08.sql)
 
 9. ...
-[Resposta Ex9.](Exercícios/Exercícios_1/E09.SQL)
+[Resposta Ex9.](Exercícios/Exercícios_1/E09.sql)
 
 10. ...
-[Resposta Ex10.](Exercícios/Exercícios_1/E10.SQL)
+[Resposta Ex10.](Exercícios/Exercícios_1/E10.sql)
 
 11. ...
-[Resposta Ex11.](Exercícios/Exercícios_1/E11.SQL)
+[Resposta Ex11.](Exercícios/Exercícios_1/E11.sql)
 
 12. ...
-[Resposta Ex12.](Exercícios/Exercícios_1/E12.SQL)
+[Resposta Ex12.](Exercícios/Exercícios_1/E12.sql)
 
 13. ...
-[Resposta Ex13.](Exercícios/Exercícios_1/E13.SQL)
+[Resposta Ex13.](Exercícios/Exercícios_1/E13.sql)
 
 14. ...
-[Resposta Ex14.](Exercícios/Exercícios_1/E14.SQL)
+[Resposta Ex14.](Exercícios/Exercícios_1/E14.sql)
 
 15. ...
-[Resposta Ex15.](Exercícios/Exercícios_1/E15.SQL)
+[Resposta Ex15.](Exercícios/Exercícios_1/E15.sql)
 
 16. ...
-[Resposta Ex16.](Exercícios/Exercícios_1/E16.SQL)
+[Resposta Ex16.](Exercícios/Exercícios_1/E16.sql)
+
+
+## Exercícios 2
+
+1. ...
+[Resposta Ex1.](Exercícios/Exercícios_2/Etapa_1.sql)
+
+2. ...
+[Resposta Ex1.](Exercícios/Exercícios_2/Etapa_2.sql)
+
 
 # Evidências
 
