@@ -73,10 +73,16 @@ utilizando tabelas fato e dimensões para facilitar a leitura e interpretação 
 ## Exercícios 2
 
 1. ...
-[Resposta Ex1.](Exercícios/Exercícios_2/Etapa_1.sql)
+
+[Resposta Ex1.(sql)](Exercícios/Exercícios_2/Etapa_1.sql)
+
+[Resposta Ex1. (csv)](Exercícios/Exercícios_2/Etapa_1.csv)
 
 2. ...
-[Resposta Ex1.](Exercícios/Exercícios_2/Etapa_2.sql)
+   
+[Resposta Ex2.(sql)](Exercícios/Exercícios_2/Etapa_2.sql)
+
+[Resposta Ex2. (csv)](Exercícios/Exercícios_2/Etapa_2.csv)
 
 
 # Evidências
