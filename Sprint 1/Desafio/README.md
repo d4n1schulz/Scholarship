@@ -4,13 +4,13 @@
 # 1. ... [Etapa I - Normalização](etapa-1/Modelagem_Relacional.sql)
 
 
-    Nessa etapa pode-se perceber com esse código:
+Nessa etapa pode-se perceber com esse código:
 
     ```SQL
     SELECT * FROM tb_locacao;
     ```
-    A tabela "tb_locacao" possuía muitos atributos que se repetiam constantemente em uma consulta.
-    ![](/Sprint%201/Evidências/tb_locacao(consulta).png)
+A tabela "tb_locacao" possuía muitos atributos que se repetiam constantemente em uma consulta.
+![](/Sprint%201/Evidências/tb_locacao(consulta).png)
 
 ### Identificação e criação de entidades separadas
 
