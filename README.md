@@ -2,7 +2,7 @@
 
 ## Sobre mim
 
-<img src="Foto_Apresentação/foto.jpeg" alt="Daniel Schulz" width="150px">
+![Minha Foto de Perfil](https://avatars.githubusercontent.com/u/163685767?v=4)
 
 - 🌍 **Localização:** Santa Cruz do Sul, Rio Grande do Sul, Brasil.  
 - 🎓 **Instituição de Ensino:** UNISC - Universidade de Santa Cruz do Sul.  
