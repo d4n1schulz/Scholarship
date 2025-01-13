@@ -55,6 +55,7 @@ Código:
     dados_agrupados.sort_values('Installs', ascending=False).head(5)
 
 Execução:
+
 ![top_5_installs](../Evidências/resultado_installs.png)
 
 Após, fiz o código para gerar com o matplotlib o gráfico de barras. 
@@ -155,6 +156,7 @@ Código:
     print(f'{mature_17_plus} apps são classificados como "Mature 17+"')
 
 Execução:
+
 ![mature_17+](../Evidências/mature_17+.png)
 
 ## 6. Top 10 apps por número de Reviews
@@ -215,6 +217,7 @@ Código:
     print(f'{quantidade_apps5} apps possuem avaliação máxima (5.0)')
 
 Execução:
+
 ![Quantidade_apps_avaliação_max](../Evidências/quant_apps_aval_5.png)
 
 ## 8. Gerar gráfico de cada cálculo da etapa 7
