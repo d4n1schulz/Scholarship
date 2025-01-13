@@ -1,0 +1,29 @@
+Filmes ordenados pela quantidade de aparições:
+The Avengers: 6 aparições
+Catching Fire: 4 aparições
+Harry Potter / Deathly Hallows (P2): 4 aparições
+Meet the Fockers: 3 aparições
+Star Wars: The Force Awakens: 3 aparições
+The Dark Knight: 3 aparições
+Avengers: Age of Ultron: 2 aparições
+Dead Man's Chest: 2 aparições
+Night at the Museum: 2 aparições
+Return of the King: 2 aparições
+Shrek 2: 2 aparições
+American Sniper: 1 aparições
+Hotel Transylvania 2: 1 aparições
+Independence Day: 1 aparições
+Men in Black: 1 aparições
+Minions: 1 aparições
+Ocean's Eleven: 1 aparições
+Sixth Sense: 1 aparições
+The Dark Knight Rises: 1 aparições
+The Grinch: 1 aparições
+The LEGO Movie: 1 aparições
+The Martian: 1 aparições
+The Phantom Menace: 1 aparições
+Titanic: 1 aparições
+Toy Story 3: 1 aparições
+Transformers 4: 1 aparições
+War of the Worlds: 1 aparições
+World War Z: 1 aparições
