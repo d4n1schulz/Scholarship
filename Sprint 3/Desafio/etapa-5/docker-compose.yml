@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  script1:
+    build:
+      context: .
+      dockerfile: Dockerfile1
+    volumes:
+      - ./volume:/app
+    command: python /app/etl.py
+
+  script2:
+    build:
+      context: .
+      dockerfile: Dockerfile2
+    volumes:
+      - ./volume:/app
+    depends_on:
+      - script1
+    command: python /app/job.py

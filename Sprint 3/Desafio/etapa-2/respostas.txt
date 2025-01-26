@@ -1,0 +1,12 @@
+Q1:
+--- A artista que aparece mais vezes e tem a maior media de faturamento: Taylor Swift
+
+Q2:
+--- Das tours que aconteceram em um ano, a tour com a maior media de faturamento bruto: Renaissance World Tour
+
+Q3:
+--- As 3 artistas que mais lucraram com menos quantidade de shows:
+--- Artista: Pink, Tour: Summer Carnival
+--- Artista: Celine Dion, Tour: Taking Chances World Tour
+--- Artista: Lady Gaga, Tour: Born This Way Ball
+
