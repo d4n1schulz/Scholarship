@@ -1,6 +1,6 @@
 # Resumo
 
-**Noções básicas de Analytics na AWS**  Aprendi os conceitos básicos de analytics, incluindo os tipos de análise, os 5 Vs do big data e desafios do processamento de grandes volumes de dados. Também explorei como a AWS fornece serviços para cada um dos 5 Vs e soluções para armazenamento, transporte e processamento de dados. Além disso, entendi o papel do ETL/ELT e das ferramentas de business intelligence no pipeline de analytics.
+**Noções básicas de Analytics na AWS**:  Aprendi os conceitos básicos de analytics, incluindo os tipos de análise, os 5 Vs do big data e desafios do processamento de grandes volumes de dados. Também explorei como a AWS fornece serviços para cada um dos 5 Vs e soluções para armazenamento, transporte e processamento de dados. Além disso, entendi o papel do ETL/ELT e das ferramentas de business intelligence no pipeline de analytics.
 
 **Introduction to Amazon Athena**: Aprendi sobre o Amazon Athena, incluindo sua funcionalidade e ambiente operacional. O curso abordou as etapas básicas de implementação, desde a criação de um banco de dados até a execução de consultas SQL para validação. Além disso, vi uma demonstração prática no Console de Gerenciamento da AWS.
 
