@@ -41,6 +41,11 @@ Este desafio consiste em realizar a análise de séries de guerra, utilizando da
 
 O objetivo da Etapa 1 é fazer o upload de dois arquivos CSV, contendo informações de filmes e séries, para o Amazon S3, dentro da RAW Zone do Data Lake. O código Python será executado em um container Docker, e a biblioteca `boto3` será usada para carregar os dados para o S3.
 
+
+#### Bucket do Datalake criado
+
+![bucket_criado](../Evidências/bucket_criado.png)
+
 ### Passos Realizados
 
 #### 1.1. Download dos Arquivos Necessários
@@ -138,10 +143,6 @@ Os dados processados serão armazenados no formato **JSON** na camada **Raw** do
 ---
 
 ## Configurações na AWS
-
-Bucket criado
-
-![bucket_criado](../Evidências/bucket_criado.png)
 
 Desativei o bloqueio do acesso público no bucket
 
