@@ -13,12 +13,12 @@
 
 ## Sprints
 
-- [Sprint 1](https://github.com/d4n1schulz/Scholarship-AWS-Cloud-Data-Engineering/tree/main/Sprint%201)
-- Sprint 2  
-- Sprint 3  
-- Sprint 4  
-- Sprint 5  
-- Sprint 6  
+- [Sprint 1](/Sprint%201/)
+- [Sprint 2](/Sprint%202/) 
+- [Sprint 3](/Sprint%203/)  
+- [Sprint 4](/Sprint%204/)  
+- [Sprint 5](/Sprint%205/)  
+- [Sprint 6](/Sprint%206/) 
 - Sprint 7  
 - Sprint 8  
 - Sprint 9  
