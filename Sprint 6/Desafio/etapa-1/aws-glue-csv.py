@@ -46,11 +46,8 @@ df = df.withColumn("notaMedia", col("notaMedia").cast("int"))
 # Removi duplicatas
 df = df.dropDuplicates()
 
-# Filtrei para ter os dados do gênero Crime ou War
-df_filtered = df.filter(col("genero").rlike("Crime|War"))
-
 # Salvei os dados filtrados no S3 no formato Parquet (usando Spark diretamente)
-df_filtered.write.mode("overwrite").parquet(target_path)
+df.write.mode("overwrite").parquet(target_path)
 
 # Finalizei o job
 job.commit()

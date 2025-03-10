@@ -1,5 +1,5 @@
 import sys
-import datetime
+import re
 from awsglue.transforms import *
 from awsglue.utils import getResolvedOptions
 from pyspark.context import SparkContext
@@ -9,11 +9,11 @@ from awsglue.dynamicframe import DynamicFrame
 from pyspark.sql.functions import col, upper, when
 
 # Obtive argumentos do AWS Glue Job
-args = getResolvedOptions(sys.argv, ['JOB_NAME', 'INPUT_PATH', 'OUTPUT_PATH'])
+args = getResolvedOptions(sys.argv, ['JOB_NAME', 'INPUT_PATH', 'TARGET_PATH'])
 
 # Converti a string de caminhos em uma lista
 json_paths = args['INPUT_PATH'].split(',')
-parquet_base_path = args['OUTPUT_PATH']
+parquet_base_path = args['TARGET_PATH']
 
 # Inicializei Spark e Glue
 sc = SparkContext()
@@ -22,13 +22,20 @@ spark = glueContext.spark_session
 job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
 
-# Obtive data da execução para criar diretórios no formato correto
-today = datetime.datetime.now()
-ano, mes, dia = today.strftime("%Y"), today.strftime("%m"), today.strftime("%d")
+# Função para extrair a data do caminho do arquivo
+def extract_date_from_path(path):
+    match = re.search(r'(\d{4})/(\d{2})/(\d{2})/', path)
+    if match:
+        return match.group(1), match.group(2), match.group(3)
+    else:
+        raise ValueError("Data não encontrada no caminho do arquivo")
 
-# Criei um DynamicFrame para cada JSON e apliquei transformações
-dataframes = []
+# Processar cada arquivo JSON individualmente
 for path in json_paths:
+    # Extrai a data do caminho do arquivo
+    ano, mes, dia = extract_date_from_path(path)
+    
+    # Cria um DynamicFrame a partir do JSON
     dynamic_frame = glueContext.create_dynamic_frame.from_options(
         format_options={"multiline": True},
         connection_type="s3",
@@ -36,9 +43,10 @@ for path in json_paths:
         connection_options={"paths": [path], "recurse": True}
     )
 
+    # Converte para DataFrame
     df = dynamic_frame.toDF()
 
-    # Apliquei transformações
+    # Aplica transformações
     df = df.withColumn("anoLancamento", when(col("anoLancamento") == "", "Desconhecido")
                                        .otherwise(col("anoLancamento").cast("int")))
     df = df.withColumn("numeroEpisodios", when(col("numeroEpisodios").isNull(), 0)
@@ -48,28 +56,19 @@ for path in json_paths:
     df = df.withColumn("tituloOriginal", upper(col("tituloOriginal")))
     df = df.withColumn("estudio", upper(col("estudio")))
 
-    dataframes.append(df)
+    # Converte de volta para DynamicFrame
+    transformed_dynamic_frame = DynamicFrame.fromDF(df, glueContext, "transformed_df")
 
-# Uni todos os DataFrames
-df_final = dataframes[0]
-for df in dataframes[1:]:
-    df_final = df_final.unionByName(df)
+    # Cria o caminho de saída com base na data extraída
+    final_path = f"{parquet_base_path}/TMDB/Parquet/Series/{ano}/{mes}/{dia}/"
 
-# Converti para DynamicFrame
-transformed_dynamic_frame = DynamicFrame.fromDF(df_final, glueContext, "transformed_df")
-
-# Caminho final seguindo o padrão estabelecido
-final_path = f"{parquet_base_path}/TMDB/Parquet/Series/{ano}/{mes}/{dia}/"
-
-# Salvando como Parquet no S3
-glueContext.write_dynamic_frame.from_options(
-    frame=transformed_dynamic_frame,
-    connection_type="s3",
-    format="parquet",
-    connection_options={"path": final_path} 
-)
-
-print(f"Processamento concluído! Dados salvos em: {final_path}")
+    # Salva como Parquet no S3
+    glueContext.write_dynamic_frame.from_options(
+        frame=transformed_dynamic_frame,
+        connection_type="s3",
+        format="parquet",
+        connection_options={"path": final_path} 
+    )
 
 # Finalizando o job
 job.commit()

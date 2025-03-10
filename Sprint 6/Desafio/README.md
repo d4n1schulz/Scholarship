@@ -4,7 +4,7 @@ Comecei criando o diretório Trusted no meu DataLake:
 
 ![trusted_criado](../Evidências/trusted_criada.png)
 
-Como inicialmente eu escolhi analisar apenas as séries de Guerra, no CSV eu filtrei as séries do gênero Guerra, mas ao fazer a filtragem percebi que tinha poucos dados com essas condições:
+Como inicialmente eu escolhi analisar apenas as séries de Guerra, no CSV eu filtrei as séries do gênero Guerra para saber a quantidade, mas ao fazer a filtragem percebi que tinha poucos dados com essas condições:
 
 ![linhas_series_war](../Evidências/linhas_war_csv.png)
 
@@ -26,7 +26,7 @@ Sendo assim, pensei em analisar dados de séries de Guerra e Crime, então, prec
 
 ---
 
-Código Lambda atualizado e executado:
+Código Lambda executado:
 
 ![dados_series_crime](../Evidências/dados_crime_api.png)
 
@@ -80,8 +80,6 @@ As colunas anoLancamento, anoTermino e tempoMinutos, anoNascimento, anoFalecimen
 Também idenfiquei valores duplicados, então escolhi remover as duplicatas.
 
 ![duplicados](../Evidências/duplicados.png)
-
-E como optei por fazer análises sobre os gêneros Crime e Guerra, filtrarei para ter os dados do gênero "Crime" ou "War".
 
 ## Código para fazer o ETL no AWS Glue (Job 1):
 
@@ -171,15 +169,9 @@ df = df.dropDuplicates()
 ```
 ---
 
-### **10. Filtragem por Gênero (Crime ou Guerra)**
+### **10. Salvamento no S3 em Formato Parquet**
 ```python
-df_filtered = df.filter(col("genero").rlike("Crime|War"))
-```
----
-
-### **11. Salvamento no S3 em Formato Parquet**
-```python
-df_filtered.write.mode("overwrite").parquet(target_path)
+df.write.mode("overwrite").parquet(target_path)
 ```
 ---
 
@@ -220,7 +212,7 @@ Os textos nas colunas tituloOriginal e estudio serão convertidos para maiúscul
 ### **1. Importação das Bibliotecas**
 ```python
 import sys
-import datetime
+import re
 from awsglue.transforms import *
 from awsglue.utils import getResolvedOptions
 from pyspark.context import SparkContext
@@ -233,17 +225,21 @@ from pyspark.sql.functions import col, upper, when
 
 ### **2. Obtenção de Argumentos do AWS Glue Job**
 ```python
-args = getResolvedOptions(sys.argv, ['JOB_NAME', 'INPUT_PATH', 'OUTPUT_PATH'])
+args = getResolvedOptions(sys.argv, ['JOB_NAME', 'INPUT_PATH', 'TARGET_PATH'])
 ```
+- **Argumentos:**
+  - `INPUT_PATH`: Caminho(s) dos arquivos JSON de entrada no S3.
+  - `TARGET_PATH`: Caminho base de saída para os arquivos Parquet no S3.
+
 ---
 
 ### **3. Conversão de Caminhos em Listas**
 ```python
 json_paths = args['INPUT_PATH'].split(',')
-parquet_base_path = args['OUTPUT_PATH']
+parquet_base_path = args['TARGET_PATH']
 ```
-- O caminho de entrada **INPUT_PATH** é dividido em uma lista de caminhos separados por vírgula, permitindo processar múltiplos arquivos JSON.
-- O caminho de saída **OUTPUT_PATH** é atribuído à variável **parquet_base_path**.
+- **INPUT_PATH** é dividido em uma lista de caminhos separados por vírgula, permitindo processar múltiplos arquivos JSON.
+- **TARGET_PATH** é atribuído à variável **parquet_base_path**, que será usada como base para o caminho de saída.
 
 ---
 
@@ -255,106 +251,95 @@ spark = glueContext.spark_session
 job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
 ```
-
 ---
 
-### **5. Obtendo Data de Execução**
+### **5. Função para Extrair Data do Caminho do Arquivo**
 ```python
-today = datetime.datetime.now()
-ano, mes, dia = today.strftime("%Y"), today.strftime("%m"), today.strftime("%d")
+def extract_date_from_path(path):
+    match = re.search(r'(\d{4})/(\d{2})/(\d{2})/', path)
+    if match:
+        return match.group(1), match.group(2), match.group(3)
+    else:
+        raise ValueError("Data não encontrada no caminho do arquivo")
 ```
-- Obtém a data atual para organizar os arquivos de saída por ano, mês e dia.
+- **Função:**
+  - Extrai a data (ano, mês e dia) do caminho do arquivo JSON usando uma expressão regular.
+  - Se a data não for encontrada, uma exceção é lançada.
 
 ---
 
-### **6. Transformação dos Dados dos Arquivos JSON**
+### **6. Processamento de Cada Arquivo JSON Individualmente**
 ```python
-dataframes = []
 for path in json_paths:
+    ano, mes, dia = extract_date_from_path(path)
+    
     dynamic_frame = glueContext.create_dynamic_frame.from_options(
         format_options={"multiline": True},
         connection_type="s3",
         format="json",
         connection_options={"paths": [path], "recurse": True}
     )
-
-    df = dynamic_frame.toDF()
 ```
-- Para cada caminho de arquivo JSON, cria um **DynamicFrame** a partir do S3. A opção **multiline=True** permite que o Glue leia JSON com múltiplas linhas.
-- O **DynamicFrame** é convertido em um **DataFrame Spark** para permitir manipulação usando PySpark.
+- Para cada caminho de arquivo JSON:
+  - Extrai a data (ano, mês e dia) do caminho.
+  - Cria um **DynamicFrame** a partir do JSON no S3, com a opção **multiline=True** para ler JSONs com múltiplas linhas.
 
 ---
 
-### **7. Aplicando Transformações**
+### **7. Conversão para DataFrame e Aplicação de Transformações**
 ```python
-    df = df.withColumn("anoLancamento", when(col("anoLancamento") == "", "Desconhecido")
-                                       .otherwise(col("anoLancamento").cast("int")))
+    df = dynamic_frame.toDF()
 
-    df = df.withColumn("numeroEpisodios", when(col("numeroEpisodios").isNull(), 0)
-                                         .otherwise(col("numeroEpisodios").cast("int")))
+    df = df.withColumn("anoLancamento", when(col("anoLancamento") == "", "Desconhecido").otherwise(col("anoLancamento").cast("int")))
 
-    df = df.withColumn("estudio", when(col("estudio") == "N/A", "Desconhecido")
-                                  .otherwise(col("estudio")))
+    df = df.withColumn("numeroEpisodios", when(col("numeroEpisodios").isNull(), 0).otherwise(col("numeroEpisodios").cast("int")))
+
+    df = df.withColumn("estudio", when(col("estudio") == "N/A", "Desconhecido").otherwise(col("estudio")))
 
     df = df.withColumn("tituloOriginal", upper(col("tituloOriginal")))
+    
     df = df.withColumn("estudio", upper(col("estudio")))
-
-    dataframes.append(df)
 ```
-- **Transformações** aplicadas ao **DataFrame**:
+- **Transformações aplicadas:**
   - `anoLancamento`: Se estiver vazio, é atribuído "Desconhecido". Caso contrário, é convertido para **inteiro**.
   - `numeroEpisodios`: Se for **NULL**, é substituído por 0, caso contrário, é convertido para **inteiro**.
   - `estudio`: Se o valor for **"N/A"**, é substituído por "Desconhecido".
   - `tituloOriginal` e `estudio`: São convertidos para **maiúsculas**.
-- Cada **DataFrame** resultante é adicionado à lista **dataframes**.
 
 ---
 
-### **8. União de DataFrames**
+### **8. Conversão de Volta para DynamicFrame**
 ```python
-df_final = dataframes[0]
-for df in dataframes[1:]:
-    df_final = df_final.unionByName(df)
+    transformed_dynamic_frame = DynamicFrame.fromDF(df, glueContext, "transformed_df")
 ```
-- Todos os **DataFrames** transformados são unidos em um único **DataFrame** utilizando o método **unionByName**, que combina os dados com base no nome das colunas.
+- O **DataFrame** transformado é convertido de volta para **DynamicFrame**, que é o formato utilizado pelo AWS Glue para salvar os dados.
 
 ---
 
-### **9. Conversão para DynamicFrame**
+### **9. Definição do Caminho de Saída**
 ```python
-transformed_dynamic_frame = DynamicFrame.fromDF(df_final, glueContext, "transformed_df")
+    final_path = f"{parquet_base_path}/TMDB/Parquet/Series/{ano}/{mes}/{dia}/"
 ```
-- O **DataFrame** final é convertido de volta para **DynamicFrame**, que é o formato utilizado pelo AWS Glue para realizar transformações e salvar os dados.
+- O caminho de saída é criado com base na data extraída do caminho do arquivo JSON, seguindo o padrão **ano/mês/dia**.
 
 ---
 
-### **10. Definindo o Caminho de Saída**
+### **10. Escrita do DataFrame Transformado no S3 em Parquet**
 ```python
-final_path = f"{parquet_base_path}/TMDB/Parquet/Series/{ano}/{mes}/{dia}/"
+    glueContext.write_dynamic_frame.from_options(
+        frame=transformed_dynamic_frame,
+        connection_type="s3",
+        format="parquet",
+        connection_options={"path": final_path} 
+    )
 ```
-- Define o caminho final onde os arquivos transformados serão salvos no formato **Parquet**. A estrutura de diretórios segue o padrão **ano/mês/dia**.
-
+- O **DynamicFrame** transformado é salvo no S3 no formato **Parquet**, no caminho especificado.
 ---
 
-### **11. Escrevendo o DataFrame Transformado no S3 em Parquet**
+### **11. Finalizando o Job**
 ```python
-glueContext.write_dynamic_frame.from_options(
-    frame=transformed_dynamic_frame,
-    connection_type="s3",
-    format="parquet",
-    connection_options={"path": final_path} 
-)
-```
-- Grava o **DynamicFrame** transformado no S3, no formato **Parquet**, no caminho especificado.
-
----
-
-### **12. Finalizando o Job**
-```python
-print(f"Processamento concluído! Dados salvos em: {final_path}")
 job.commit()
 ```
-- Exibe uma mensagem indicando que o processamento foi concluído com sucesso e que os dados foram salvos no caminho final.
 - Finaliza o job do Glue com **job.commit()**.
 
 ---
@@ -369,11 +354,11 @@ Arquivos gerados no S3
 
 ### Catalogando os dados
 
-Criando Crawler 
+Criando Crawler para o Primeiro Job do CSV
 
-![config_crawler](../Evidências/criando_crawler.png)
+![config_crawler](../Evidências/criando_crawler1.png)
 
-Abrindo o Athena, foi criado as duas tabelas local e tmdb
+Abrindo o Athena, foi criado a tabela local
 
 ![2_tables](../Evidências/tables_criadas.png)
 
@@ -383,14 +368,23 @@ Colunas da tabela local:
 
 ![local_table2](../Evidências/local_table2.png)
 
-Colunas da tabela tmdb:
-
-![tmdb_table](../Evidências/tmdb_table.png)
 
 Consulta das primeiras 10 linhas da tabela local:
 
 ![consulta_local](../Evidências/consulta_local.png)
 
+
+Criando Crawler para o segundo Job de JSON
+
+![criando_crawler2](../Evidências/criando_crawler2.png)
+
+Colunas da tabela tmdb:
+
+![tmdb_table](../Evidências/tmdb_table.png)
+
+
 Consulta das primeiras 10 linhas da tabela tmdb:
 
 ![consulta_tmdb](../Evidências/consulta_tmdb.png)
+
+
