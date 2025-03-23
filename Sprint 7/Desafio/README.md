@@ -119,7 +119,7 @@ Nova coluna na tabela tmdb:
 
 Diagrama:
 
-![diagrama_modelagem](../Desafio/Desafio_diagrama.png)
+![diagrama_modelagem](../Desafio/etapa-1/Desafio_diagrama.png)
 
 
 ### **1. Modelagem Dimensional (Star Schema)**

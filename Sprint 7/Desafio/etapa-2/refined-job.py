@@ -30,7 +30,7 @@ tmdb_df = glueContext.create_dynamic_frame.from_options(
     format="parquet"
 ).toDF()
 
-# Renomeei colunas da TMDB para match com a Local
+# Renomeei colunas da TMDB
 tmdb_df = tmdb_df.withColumnRenamed("anoLancamento", "anolancamento") \
                  .withColumnRenamed("imdbRating", "notamedia") \
                  .withColumnRenamed("keywords", "palavras_chave") \
