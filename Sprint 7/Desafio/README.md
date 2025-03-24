@@ -205,6 +205,21 @@ Criei um novo Job para poder fazer o script da modelagem:
 
 ### Script:
 
+Importação das bibliotecas 
+
+```python
+import sys
+from awsglue.transforms import *
+from awsglue.utils import getResolvedOptions
+from pyspark.context import SparkContext
+from awsglue.context import GlueContext
+from awsglue.dynamicframe import DynamicFrame
+from awsglue.job import Job
+from pyspark.sql.functions import col, floor, concat_ws
+from pyspark.sql.window import Window
+import pyspark.sql.functions as F
+```
+
 Inicialização do Contexto do Glue
 
 ```python
