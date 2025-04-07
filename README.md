@@ -20,6 +20,6 @@
 - [Sprint 5](/Sprint%205/)  
 - [Sprint 6](/Sprint%206/) 
 - [Sprint 7](/Sprint%207/)  
-- Sprint 8  
+- [Sprint 8](/Sprint%208/)  
 - Sprint 9  
 - Sprint 10
