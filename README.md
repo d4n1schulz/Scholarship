@@ -7,7 +7,7 @@
 - 🌍 **Localização:** Santa Cruz do Sul, Rio Grande do Sul, Brasil.  
 - 🎓 **Instituição de Ensino:** UNISC - Universidade de Santa Cruz do Sul.  
 - 📚 **Curso:** Engenharia de Computação.  
-- 📆 **Semestre Atual:** 3° semestre.  
+- 📆 **Semestre Atual:** 6° semestre.  
 - 🧠 **Conhecimentos:** Sempre me aperfeiçoando com cursos na área de tecnologia.  
 - ⚽ **Hobbies:** Assistir séries e praticar esportes no meu tempo livre.
 
